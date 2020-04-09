@@ -22,15 +22,14 @@ public class Handler {
     private int tilewidth;
     private int tileheight;
     private int xtiles, ytiles;
-    // private Bitmap sprite, grass, rock, pathhorizontal, pathvertical, pathtopright, pathtopleft, pathbotright, pathbotleft, playerbase, enemybase, enemyone;
     private Bitmap[] texture = new Bitmap[30];
     private int round = 0;
 
     //TILES
-    private int tiles = 11;
+    private int tiles = 20;
     //fixedSIze
     private int tilesize = 100;
-    private boolean fixedSize = true;
+    private boolean fixedSize = false;
 
     public Handler(int width, int height) {
         this.width = width;
@@ -42,7 +41,6 @@ public class Handler {
 
         if (fixedSize) {
             tiles = width / tilesize;
-
         }
         xtiles = tiles;
         ytiles = tiles;
@@ -71,18 +69,17 @@ public class Handler {
 
 
         //PLAYER
-        player = new Player(this, 20, 20, 100);
-        player.setBase(0, tilewidth, tileheight);
+        player = new Player(this, 20, 20, 100, false);
+        player.setBase(tilewidth, tileheight);
         player.setX(tiles - 2);
         player.setY(tiles / 2);
 
 
         //ENEMY
-        enemy = new Player(this, 20, 20, 100);
-        enemy.setBase(1, tilewidth, tileheight);
+        enemy = new Player(this, 5, 30, 100, true);
+        enemy.setBase(tilewidth, tileheight);
         enemy.setX(2);
         enemy.setY(tiles / 2);
-        wave = new Wave(this, 2, 0);
 
 
     }
@@ -90,15 +87,17 @@ public class Handler {
 
     public void draw(Canvas canvas) {
         player.drawHUD(canvas);
+        enemy.drawHUD(canvas, 500);
         map.draw(canvas);
-        enemy.draw(canvas);
-        wave.draw(canvas);
         player.draw(canvas);
+        enemy.draw(canvas);
+        player.getArmy().draw(canvas);
+        enemy.getArmy().draw(canvas);
     }
 
     public void render(Point touch) {
         player.render();
-        wave.render();
+        enemy.render();
     }
 
 
@@ -150,7 +149,6 @@ public class Handler {
 
     void initBitmaps() {
 
-
         texture = new Bitmap[]{
                 //0 DEFAULT
                 Bitmap.createScaledBitmap(BitmapFactory.decodeResource(AppTools.getAppContext().getResources(), R.raw.sprite), tilewidth, tileheight, false),//0
@@ -193,6 +191,15 @@ public class Handler {
         };
 
 
+    }
+
+
+    public int drawX(int tilex) {
+        return (getxOffset() + (tilex * this.getTilewidth()));
+    }
+
+    public int drawY(int tileY) {
+        return (getyOffset() + (tileY * this.getTileheight()));
     }
 
     public Bitmap getTexture(int n) {

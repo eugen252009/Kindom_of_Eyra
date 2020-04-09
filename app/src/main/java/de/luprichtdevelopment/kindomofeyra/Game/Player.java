@@ -25,22 +25,25 @@ public class Player implements Core {
     private Handler handler;
     private float speed = 0;
     private int lastRound = 0;
+    private boolean isEnemy = true;
+    private Mobs army;
 
 
-    Player(Handler handler, int health, int armor, int coins) {
+    Player(Handler handler, int health, int armor, int coins, boolean isEnemy) {
         this.handler = handler;
         this.health = health;
         this.armor = armor;
         this.coins = coins;
+        this.isEnemy = isEnemy;
         bitheight = 50;
         bitwidth = 50;
         init();
     }
 
-    public void setBase(int i, int tilewidth, int tileheight) {
-        if (i == 0)
+    public void setBase(int tilewidth, int tileheight) {
+        if (!isEnemy)
             base = handler.getTexture(9);//PLAYER
-        if (i == 1)
+        if (isEnemy)
             base = handler.getTexture(10);//ENEMY
     }
 
@@ -57,6 +60,9 @@ public class Player implements Core {
         coinbit = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(AppTools.getAppContext().getResources(), R.raw.coin), bitwidth, bitheight, false);
         coincolor.setColor(Color.rgb(227, 212, 48));
         coincolor.setTextSize(bitheight);
+
+        army = new Mobs(handler);
+
     }
 
     void drawHUD(Canvas canvas) {
@@ -71,8 +77,19 @@ public class Player implements Core {
         canvas.drawText("" + coins, 70, bitheight * 4 + 10, coincolor);
     }
 
-    public Bitmap getBase() {
+    void drawHUD(Canvas canvas, int y) {
+        //heart
+        canvas.drawBitmap(heartbit, 10, y + bitheight, null);
+        canvas.drawText("" + health, 70, y + 90, heartcolor);
+        //Armor
+        canvas.drawBitmap(armorbit, 10, y + bitheight * 2 + 10, null);
+        canvas.drawText("" + armor, 70, y + 150, armorcolor);
+        //COINS
+        canvas.drawBitmap(coinbit, 10, y + bitheight * 3 + 20, null);
+        canvas.drawText("" + coins, 70, y + bitheight * 4 + 10, coincolor);
+    }
 
+    public Bitmap getBase() {
         return base;
     }
 
@@ -96,16 +113,21 @@ public class Player implements Core {
     @Override
     public void render() {
         if (handler.getRound() > lastRound) {
-
+            army.addMob(0);
+            army.render(1, 0);
         }
     }
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(base, handler.getxOffset() + (((x - 1) * handler.getTilewidth())), handler.getyOffset() + (y - 1) * handler.getTileheight(), null);
+        canvas.drawBitmap(base, handler.drawX((int) x), (int) y, null);
     }
 
     public Wave[] getEnemies() {
         return enemies;
+    }
+
+    public Mobs getArmy() {
+        return army;
     }
 }
