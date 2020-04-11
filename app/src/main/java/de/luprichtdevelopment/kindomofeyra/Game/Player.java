@@ -45,7 +45,6 @@ public class Player {
 		bitwidth = 50;
 		init();
 	}
-	
 	@SuppressWarnings("all")
 	public void setBase(int tilewidth, int tileheight) {
 		if (!isEnemy)
