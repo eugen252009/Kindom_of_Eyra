@@ -104,7 +104,7 @@ public class Handler {
 		if (touchY > 500) nextRound();
 	}
 	
-	private void nextRound() {
+	public void nextRound() {
 		this.round++;
 	}
 	
@@ -238,4 +238,6 @@ public class Handler {
 		touchX = x;
 		touchY = y;
 	}
+	
+	
 }

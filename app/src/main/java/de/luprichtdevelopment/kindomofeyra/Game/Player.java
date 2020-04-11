@@ -25,12 +25,10 @@ public class Player {
 	private int bitheight, bitwidth;
 	private float x, y;
 	private Wave[] enemies = new Wave[1];
-	private boolean enemy = true;
 	private Handler handler;
-	private float speed = 0;
 	private int lastRound = 0;
+	private int lastspawn = 0;
 	private boolean isEnemy;
-	private Mobs army;
 	private ArrayList<Mobs> Army = new ArrayList<>();
 	private Point waypoint = new Point();
 	
@@ -45,6 +43,7 @@ public class Player {
 		bitwidth = 50;
 		init();
 	}
+	
 	@SuppressWarnings("all")
 	public void setBase(int tilewidth, int tileheight) {
 		if (!isEnemy)
@@ -103,18 +102,23 @@ public class Player {
 		this.y = y;
 	}
 	
-	
 	void render() {
 		if (handler.getRound() % 2 == 0 && !isEnemy) {
 			Log.i("Round:", "Player Round " + handler.getRound());
-			
-			
+			if (this.coins >= 1) {
+				if (handler.getRound() - 2 > lastspawn) {
+					Army.add(new Mobs(handler, 1, (int) getX(), (int) getY() + 1));
+					this.coins -= 1;
+					lastspawn = handler.getRound();
+				}
+				handler.nextRound();
+			}
 		} else if (handler.getRound() % 2 == 1 && isEnemy) {
-			Log.i("Round:", "Enemy Round " + handler.getRound());
-         
-            
-            
-        }
+			handler.nextRound();
+		}
+		for (Mobs mob : Army) {
+			mob.render();
+		}
 	}
 	
 	void draw(Canvas canvas) {
@@ -122,13 +126,5 @@ public class Player {
 		for (Mobs mobs : Army) {
 			mobs.draw(canvas);
 		}
-	}
-	
-	public Wave[] getEnemies() {
-		return enemies;
-	}
-	
-	public Mobs getArmy() {
-		return army;
 	}
 }

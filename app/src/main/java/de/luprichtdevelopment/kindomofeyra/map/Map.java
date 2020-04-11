@@ -51,18 +51,15 @@ public class Map {
 					map[i][j] = BORDERBOT;
 					continue;
 				}
+				if (i == handler.getPlayer().getY() + 1) {
+					map[i][j] = PATHHORIZONTAL;
+				}
 				map[i][j] = GRASS;
 			}
-			
-			//TOP Right
-			map[0][handler.getYtiles() - 1] = BORDERTOPRIGHT;
-			//TOP LEFT
 			map[0][0] = BORDERTOPLEFT;
-			//BOTTOM LEFT
-			map[handler.getXtiles() - 1][0] = BORDERBOTLEFT;
-			//BOTTOM RIGHT
+			map[handler.getXtiles() - 1][0] = BORDERTOPRIGHT;
+			map[0][handler.getYtiles() - 1] = BORDERBOTLEFT;
 			map[handler.getXtiles() - 1][handler.getYtiles() - 1] = BORDERBOTRIGHT;
-			
 		}
 	}
 	
