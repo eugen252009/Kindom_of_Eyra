@@ -43,7 +43,7 @@ public class Handler {
 		init();
 	}
 	
-	void init() {
+	private void init() {
 		
 		if (fixedSize) {
 			tiles = width / tilesize;
@@ -104,7 +104,7 @@ public class Handler {
 		if (touchY > 500) nextRound();
 	}
 	
-	void nextRound() {
+	private void nextRound() {
 		this.round++;
 	}
 	
@@ -154,7 +154,7 @@ public class Handler {
 		return enemy;
 	}
 	
-	void initBitmaps() {
+	private void initBitmaps() {
 		
 		error = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(AppTools.getAppContext().getResources(), R.raw.sprite), tilewidth, tileheight, false);
 		
@@ -199,24 +199,19 @@ public class Handler {
 				Bitmap.createScaledBitmap(BitmapFactory.decodeResource(AppTools.getAppContext().getResources(), R.raw.borderbotleft), tilewidth, tileheight, false),
 		};
 		
-		misctexture = new Bitmap[]{
-				//0 DEFAULT //ERROR
-				Bitmap.createScaledBitmap(BitmapFactory.decodeResource(AppTools.getAppContext().getResources(), R.raw.sprite), tilewidth, tileheight, false),
-		};
-		
 		
 	}
 	
 	
-	public int drawX(int tilex) {
+	int drawX(int tilex) {
 		return (getxOffset() + (tilex * this.getTilewidth()));
 	}
 	
-	public int drawY(int tileY) {
+	int drawY(int tileY) {
 		return (getyOffset() + (tileY * this.getTileheight()));
 	}
 	
-	public Bitmap getplayerTexture(int n) {
+	Bitmap getplayerTexture(int n) {
 		return n > playerTexture.length ? error : playerTexture[n];
 	}
 	
@@ -228,7 +223,7 @@ public class Handler {
 	}
 	
 	
-	public int getRound() {
+	int getRound() {
 		return round;
 	}
 	

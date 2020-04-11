@@ -3,10 +3,9 @@ package de.luprichtdevelopment.kindomofeyra.map;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import de.luprichtdevelopment.kindomofeyra.Game.Core;
 import de.luprichtdevelopment.kindomofeyra.Game.Handler;
 
-public class Map implements Core {
+public class Map {
 	
 	private final int GRASS = 1;
 	private final int PATHTOPRIGHT = 6;
@@ -33,7 +32,7 @@ public class Map implements Core {
 		mapinit();
 	}
 	
-	void mapinit() {
+	private void mapinit() {
 		for (int i = 0; i < handler.getXtiles(); i++) {
 			for (int j = 0; j < handler.getXtiles(); j++) {
 				if (i == 0) {
@@ -114,8 +113,6 @@ public class Map implements Core {
 		}
 	}
 	
-	
-	@Override
 	public void render() {
 	
 	}

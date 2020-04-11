@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -13,10 +14,10 @@ import de.luprichtdevelopment.kindomofeyra.R;
 import de.luprichtdevelopment.kindomofeyra.tools.AppTools;
 
 
-public class Player implements Core {
-	private int health = 0;
-	private int armor = 0;
-	private int coins = 0;
+public class Player {
+	private int health;
+	private int armor;
+	private int coins;
 	private Bitmap heartbit, base, armorbit, coinbit;
 	private Paint heartcolor = new Paint();
 	private Paint armorcolor = new Paint();
@@ -24,13 +25,13 @@ public class Player implements Core {
 	private int bitheight, bitwidth;
 	private float x, y;
 	private Wave[] enemies = new Wave[1];
-	private boolean enemy = false;
+	private boolean enemy = true;
 	private Handler handler;
 	private float speed = 0;
 	private int lastRound = 0;
-	private boolean isEnemy = true;
+	private boolean isEnemy;
 	private Mobs army;
-	private ArrayList<Mobs> Army = new ArrayList<Mobs>();
+	private ArrayList<Mobs> Army = new ArrayList<>();
 	private Point waypoint = new Point();
 	
 	
@@ -45,6 +46,7 @@ public class Player implements Core {
 		init();
 	}
 	
+	@SuppressWarnings("all")
 	public void setBase(int tilewidth, int tileheight) {
 		if (!isEnemy)
 			base = handler.getplayerTexture(0);//PLAYER
@@ -52,7 +54,7 @@ public class Player implements Core {
 			base = handler.getplayerTexture(1);//ENEMY
 	}
 	
-	void init() {
+	private void init() {
 		//Health
 		heartbit = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(AppTools.getAppContext().getResources(), R.raw.heart), bitwidth, bitheight, false);
 		heartcolor.setColor(Color.rgb(255, 0, 0));
@@ -89,6 +91,7 @@ public class Player implements Core {
 		return x;
 	}
 	
+	@SuppressWarnings("all")
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -97,27 +100,25 @@ public class Player implements Core {
 		return y;
 	}
 	
-	public void setY(int y) {
+	void setY(int y) {
 		this.y = y;
 	}
 	
 	
-	@Override
-	public void render() {
+	void render() {
 		if (handler.getRound() % 2 == 0 && !isEnemy) {
-			//     Log.i("Round:","Player Round "+handler.getRound());
+			Log.i("Round:", "Player Round " + handler.getRound());
 			
 			
 		} else if (handler.getRound() % 2 == 1 && isEnemy) {
-			//     Log.i("Round:","Enemy Round "+handler.getRound());
+			Log.i("Round:", "Enemy Round " + handler.getRound());
          
             
             
         }
 	}
 	
-	@Override
-	public void draw(Canvas canvas) {
+	void draw(Canvas canvas) {
 		canvas.drawBitmap(base, handler.drawX((int) x), handler.drawY((int) y), null);
 		for (Mobs mobs : Army) {
 			mobs.draw(canvas);
