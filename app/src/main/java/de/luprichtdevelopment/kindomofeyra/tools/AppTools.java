@@ -14,6 +14,6 @@ public class AppTools extends Application {
         super.onCreate();
         AppTools.context = getApplicationContext();
     }
-
-
+    
+    
 }

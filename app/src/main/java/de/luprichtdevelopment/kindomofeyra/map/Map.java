@@ -7,125 +7,116 @@ import de.luprichtdevelopment.kindomofeyra.Game.Core;
 import de.luprichtdevelopment.kindomofeyra.Game.Handler;
 
 public class Map implements Core {
-
-    private int[][] map;
-    private Handler handler;
-    private Paint paint;
-    private int grass = 0;
-
-
-    public Map(Handler handler) {
-        this.handler = handler;
-        map = new int[handler.getXtiles()][handler.getYtiles()];
-        mapinit();
-    }
-
-    void mapinit() {
-        for (int i = 0; i < handler.getXtiles(); i++) {
-            for (int j = 0; j < handler.getXtiles(); j++) {
-                if (i == 0) {
-                    map[i][j] = 6;
-                }
-                if (j == 0) {
-                    map[i][j] = 10;
-                }
-                if (i == handler.getXtiles() - 1) {
-                    map[i][j] = 8;
-                }
-                if (j == handler.getYtiles() - 1) {
-                    map[i][j] = 7;
-                }
-            }
-            map[0][0] = 12;
-            map[handler.getXtiles() - 1][0] = 13;
-            map[handler.getXtiles() - 1][handler.getYtiles() - 1] = 11;
-            map[0][handler.getYtiles() - 1] = 9;
-
-        }
-    }
-
-    private int gettextureID(int x, int y) {
-        switch (map[x][y]) {
-            default:
-                return 0;
-            case 0:
-
-
-               /*
-if (map[x+1][y]==0&&map[x][y+1]==0){
-    map[x][y]=0;
-    map[x+1][y]=-1;
-    map[x+1][y+1]=-1;
-    map[x][y+1]=-1;
-}
-*/
-
-               /* if (grass<=60){
-                    grass++;
-                    return 1;
-                }
-                if (grass>60){
-                    grass--;
-                    return 12;
-                }*/
-                return 1;
-            case 1:
-                return 2;
-            case 2:
-                return 3;
-            case 3:
-                return 4;
-            case 4:
-                return 5;
-            case 5:
-                return 6;
-            //BORDER
-            case 6:
-                return 12;
-            case 7:
-                return 13;
-            case 8:
-                return 14;
-            case 9:
-                return 16;
-            case 10:
-                return 15;
-            case 11:
-                return 17;
-            case 12:
-                return 18;
-            case 13:
-                return 19;
-
-
-        }
-    }
-/*  0 DEFAULT
-    1 Grass
-    2 Rock
-    3 PathHorizontal
-    4 Pathevertical
-    5 path Bot left
-    6 path bot right
-    7 path top left
-    8 path top right
-    9 player base
-    10 enemy base
-    11 enemy one
-* */
-
-    public void draw(Canvas canvas) {
-        for (int i = 0; i < handler.getXtiles(); i++) {
-            for (int j = 0; j < handler.getXtiles(); j++) {
-                //          if (map[i][j]==-1)break;
-                canvas.drawBitmap(handler.getTexture(gettextureID(i, j)), handler.getxOffset() + (i * handler.getTilewidth()), handler.getyOffset() + j * handler.getTileheight(), paint);
-            }
-        }
-    }
-
-
-    @Override
-    public void render() {
-
-    }
+	
+	private final int GRASS = 1;
+	private final int PATHTOPRIGHT = 6;
+	private final int PATHTOPLEFT = 7;
+	private final int PATHBOTRIGHT = 8;
+	private final int PATHBOTLEFT = 9;
+	private final int BORDERTOP = 10;
+	private final int BORDERBOT = 11;
+	private final int BORDERLEFT = 12;
+	private final int BORDERRIGHT = 13;
+	private final int BORDERTOPRIGHT = 14;
+	private final int BORDERTOPLEFT = 15;
+	private final int BORDERBOTRIGHT = 16;
+	private final int BORDERBOTLEFT = 17;
+	private final int PATHHORIZONTAL = 18;
+	private final int PATHVERTICAL = 19;
+	private int[][] map;
+	private Handler handler;
+	private Paint paint;
+	
+	public Map(Handler handler) {
+		this.handler = handler;
+		map = new int[handler.getXtiles()][handler.getYtiles()];
+		mapinit();
+	}
+	
+	void mapinit() {
+		for (int i = 0; i < handler.getXtiles(); i++) {
+			for (int j = 0; j < handler.getXtiles(); j++) {
+				if (i == 0) {
+					map[i][j] = BORDERLEFT;
+					continue;
+				}
+				if (j == 0) {
+					map[i][j] = BORDERTOP;
+					continue;
+				}
+				if (i == handler.getXtiles() - 1) {
+					map[i][j] = BORDERRIGHT;
+					continue;
+				}
+				if (j == handler.getYtiles() - 1) {
+					map[i][j] = BORDERBOT;
+					continue;
+				}
+				map[i][j] = GRASS;
+			}
+			
+			//TOP Right
+			map[0][handler.getYtiles() - 1] = BORDERTOPRIGHT;
+			//TOP LEFT
+			map[0][0] = BORDERTOPLEFT;
+			//BOTTOM LEFT
+			map[handler.getXtiles() - 1][0] = BORDERBOTLEFT;
+			//BOTTOM RIGHT
+			map[handler.getXtiles() - 1][handler.getYtiles() - 1] = BORDERBOTRIGHT;
+			
+		}
+	}
+	
+	private int gettextureID(int x, int y) {
+		switch (map[x][y]) {
+			default:
+				return -1;//ERROR
+			case GRASS:
+				return 0;
+			case PATHHORIZONTAL:
+				return 1;
+			case PATHVERTICAL:
+				return 2;
+			case PATHBOTLEFT:
+				return 3;
+			case PATHBOTRIGHT:
+				return 4;
+			case PATHTOPLEFT:
+				return 5;
+			case PATHTOPRIGHT:
+				return 6;
+			case BORDERTOP:
+				return 7;
+			case BORDERBOT:
+				return 8;
+			case BORDERLEFT:
+				return 9;
+			case BORDERRIGHT:
+				return 10;
+			case BORDERTOPRIGHT:
+				return 11;
+			case BORDERTOPLEFT:
+				return 12;
+			case BORDERBOTRIGHT:
+				return 13;
+			case BORDERBOTLEFT:
+				return 14;
+		}
+	}
+	
+	
+	public void draw(Canvas canvas) {
+		for (int i = 0; i < handler.getXtiles(); i++) {
+			for (int j = 0; j < handler.getXtiles(); j++) {
+				//          if (map[i][j]==-1)break;
+				canvas.drawBitmap(handler.getmapTexture(gettextureID(i, j)), handler.getxOffset() + (i * handler.getTilewidth()), handler.getyOffset() + j * handler.getTileheight(), paint);
+			}
+		}
+	}
+	
+	
+	@Override
+	public void render() {
+	
+	}
 }

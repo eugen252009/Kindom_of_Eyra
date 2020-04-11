@@ -48,6 +48,7 @@ public class MainThread extends Thread {
                 }
             } catch (Exception e) {
                 Log.e("Fehler in Mainthread", e.toString());
+                e.printStackTrace();
                 setRunning(false);
             } finally {
                 if (canvas != null) {
@@ -64,7 +65,8 @@ public class MainThread extends Thread {
             try {
                 if (waitTime > 0) sleep(waitTime);
             } catch (Exception e) {
-                Log.e("MainThread.Run3", e.toString());
+                Log.e("MainThread.Run3", e.getMessage());
+                e.printStackTrace();
                 setRunning(false);
             }
             totaltime += System.nanoTime() - startTime;

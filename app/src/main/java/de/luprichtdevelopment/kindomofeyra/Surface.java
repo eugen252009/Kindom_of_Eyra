@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -29,7 +28,6 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback {
     private Wave enemy;
     private int tiles = 11;
     private Handler handler;
-    private Point touch = new Point();
 
 
     public Surface(Context context) {
@@ -42,7 +40,7 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        touch.set((int) event.getX(), (int) event.getY());
+	    handler.setTouch((int) event.getX(), (int) event.getY());
         return true;
     }
 
@@ -107,7 +105,7 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-        handler.render(touch);
+	    handler.render();
     }
 
 }
